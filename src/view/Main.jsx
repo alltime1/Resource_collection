@@ -20,7 +20,7 @@ export default class Main extends Component {
         }} >
           {this.state.tabList.map(e => {
             return (
-              <li>
+              <li key={e}>
                 <Link className={style.article} to="/main/recommend"> {e}</Link>
               </li>
             )

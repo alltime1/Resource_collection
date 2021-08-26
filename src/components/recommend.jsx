@@ -21,18 +21,18 @@ export default class Mine extends Component {
     }
   }
   componentDidMount(){
-     console.log(this.canvasRef.current.getElementsByTagName("canvas")[0])
-    // this.canvasRef.current.getElementsByTagName("canvas").forEach(element => {
-
-    //   console.log(element)
-    // })
+     console.log(this.canvasRef.current.getElementsByTagName("canvas"))
+     for(let i=0;i<this.state.bookList.length;i++){
+      console.log(this.canvasRef.current.getElementsByTagName("canvas")[i])   
+     }
+     
   }
   render() {
     return (
       <div className={style.book_list} ref={this.canvasRef} >
         {this.state.bookList.map(e => {
           return (
-            <div onClick={()=>{window.open(e.path)}}  className={style.book_list_one}>
+            <div key={e.text} onClick={()=>{window.open(e.path)}}  className={style.book_list_one}>
               <canvas width="100px" height="100px">
                 {/* <img src={e.img}></img> */}
               </canvas>
