@@ -1,0 +1,33 @@
+.book_list{
+  margin-left: 20px;
+  display: flex;
+  justify-content: space-between;
+  flex:1;
+}
+.book_list canvas{
+  border-radius: 100px;
+}
+.book_list img{
+   width: 100px;
+   height: auto;
+
+}
+.book_list_one{
+
+  display: flex;
+
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: space-between;
+}
+.book_list_one p{
+  font-size: 14px;
+  color: #888;
+  text-align: center;
+  width: 100px;
+  margin-top: 6px;
+  display: -webkit-box;
+-webkit-box-orient: vertical;
+-webkit-line-clamp: 1;
+overflow: hidden;
+}

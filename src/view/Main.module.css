@@ -1,0 +1,14 @@
+.article{
+  padding: 4px 8px;
+  border-radius: 4px;
+  background-color: rgb(216, 30, 6);
+  color: #fff;
+  text-decoration: none;
+}
+li{
+  list-style: none;
+  white-space: nowrap;
+}
+.main{
+  display: flex;
+}
