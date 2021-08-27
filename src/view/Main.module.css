@@ -9,6 +9,9 @@ li{
   list-style: none;
   white-space: nowrap;
 }
+li:hover{
+  color: #fff;
+}
 .main{
   display: flex;
 }
