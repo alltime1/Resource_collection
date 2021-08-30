@@ -13,13 +13,14 @@ const { Search } = Input;
 const { Option } = Select;
 export default class Mine extends Component {
   constructor(props) {
+    
     super(props)
     this.canvasRef = React.createRef()
     this.state = {
       loading: false,
+      failPath:false,
       sitePath: "",
       siteMsg: "",
-      waiting:true, //等待
       sitePic: "",
       disabled: true,
       tip: "公开网址，将进入审核状态，审核成功后，网站将被收录！",
@@ -65,45 +66,57 @@ export default class Mine extends Component {
         })
         this.canvasDraw()
       }
-
     }).catch(e => {
+
       this.canvasDraw()
     })
 
   }
-  failUrl(){
+  failUrl() {
     this.setState({
-      waiting:true
-    }) ;
+      failPath:true
+    }, this.onChangeDisable);
   }
   blurUrl(url) {
     this.setState({
-      waiting:true
-    }) ;
-    let that  = this;
+      failPath:false
+    })
+    if (url.slice(0, 7) !== "http://" && url.slice(0, 8) !== "https://") {
+      url = "https://" + url
+    }
+    let that = this;
     var xmlhttp;
-      if(window.ActiveXObject){
-            xmlhttp = new window.ActiveXObject()
-      }else{
-        xmlhttp = new  window.XMLHttpRequest()
-      }
-      xmlhttp.open("GET", url ,true)
+    if (window.ActiveXObject) {
+      xmlhttp = new window.ActiveXObject()
+    } else {
+      xmlhttp = new window.XMLHttpRequest()
+    }
+    try {
+      xmlhttp.open("GET", url, true)
       xmlhttp.send()
-      xmlhttp.onreadystatechange = function(){
-        if(xmlhttp.readyState == 4){
-             if(xmlhttp.status == 200){
-              this.setState({
-                waiting:false
-              }) ;
-             }else{
-               
-               that.failUrl()
-             }
-        }else{
+    } catch (error) {
+      that.setState({
+        failPath:true
+      })
+    }
+
+
+    xmlhttp.onreadystatechange = function () {
+      console.log(xmlhttp.readyState, xmlhttp.status)
+      if (xmlhttp.readyState == 4) {
+        if (xmlhttp.status == 200) {
+           that.onChangeDisable()
+        } else {
+
           that.failUrl()
         }
+      } else {
+        that.failUrl()
       }
-
+    }
+    xmlhttp.onerror = function (e) {
+      console.log(e)
+    }
   }
   canvasDraw() {
     for (let i = 0; i < this.state.bookList.length; i++) {
@@ -154,7 +167,7 @@ export default class Mine extends Component {
           break;
         }
       }
-      
+
       ctx.rect(0, 0, 200, 200)
       ctx.fillStyle = `rgba(${color.split(",")[0]},${color.split(",")[1]},${color.split(",")[2]},${color.split(",")[3]})`
       ctx.fill()
@@ -171,6 +184,8 @@ export default class Mine extends Component {
       visible: false,
       loading: false
     });
+    this.clear()
+    
   };
   handleChange = (value) => {
     console.log(`selected ${value}`);
@@ -190,6 +205,7 @@ export default class Mine extends Component {
       visible: false,
       loading: false
     });
+    this.clear()
   };
   addList = () => {
     this.setState({
@@ -199,7 +215,7 @@ export default class Mine extends Component {
   handleChangePic = (e) => {
     this.setState({
       sitePic: e.target.value,
-    }, this.onChangeDisable("loading"))
+    }, this.onChangeDisable)
 
   }
   handleChangeMsg = (e) => {
@@ -207,16 +223,28 @@ export default class Mine extends Component {
       siteMsg: e.target.value
     }, this.onChangeDisable)
   }
+  clear(){
+   this.setState({
+    sitePath: "",
+    siteMsg: "",
+    sitePic: "",
+   })
+  }
   handleChangePath = (e) => {
     this.setState({
-      sitePath: e.target.value
+      sitePath: e.target.value,
+      failPath:false
     },
       this.onChangeDisable
 
     )
   }
   blur = (e) => {
-    if (this.state.sitePic == "") { return }
+    if (this.state.sitePic == "") {
+      this.setState({
+        errImg: false,
+      }); return
+    }
     this.setState({
       loading: true
     })
@@ -238,43 +266,19 @@ export default class Mine extends Component {
     img.src = e
   }
   onChangeDisable = (e) => {
-    if(this.state.waiting){
-      this.setState({
-        disabled: true
-      })
-      return
-    }
-    if (e && this.state.sitePic == "") {
+    console.log(this.state.sitePic)
+    if (this.state.sitePic == "") {
+     
       this.setState({
         loading: false,
         errImg: false,
+        disabled:true,
       })
+      return
     }
     if (this.state.sitePic != "" && this.state.siteMsg != "" && this.state.sitePath != "") {
       this.setState({
         disabled: false
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-        
       })
     } else {
       this.setState({
@@ -323,12 +327,13 @@ export default class Mine extends Component {
           <p>Some contents...</p>
           <p>Some contents...</p> */}
           <Search style={{
-            marginTop: "14px"
-          }} placeholder="请输入网站图片" onBlur={() => this.blur(this.state.sitePic)} onChange={this.handleChangePic} loading={this.state.loading} prefix={(this.state.errImg ? <FrownTwoTone /> : <SmileTwoTone />)} />
+            marginTop: "14px",
+            // textDecoration: this.state.errImg && "line-through",
+          }} className={"ant-input",this.state.errImg?style.errImg:""} placeholder="请输入网站图片" onBlur={() => this.blur(this.state.sitePic)} onChange={this.handleChangePic} loading={this.state.loading} prefix={(this.state.errImg ? <FrownTwoTone /> : <SmileTwoTone />)} />
           <Input style={{
             marginTop: "14px"
           }} placeholder="请输入网址信息" onChange={this.handleChangeMsg} />
-          <Input style={{
+          <Input className={"ant-input",this.state.failPath&&style.waring} style={{
             marginTop: "14px"
           }} placeholder="请输入网址路径" onBlur={() => this.blurUrl(this.state.sitePath)} onChange={this.handleChangePath} />
           <Select defaultValue="public" style={{ width: 120, marginTop: "14px" }} onChange={this.handleChange}>
