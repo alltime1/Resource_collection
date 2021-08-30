@@ -8,9 +8,13 @@
   left: 0;
   width: 100%;
   display: flex;
+  background: #fff;
+  padding-top: 10px;
+  box-shadow: 0px -1px 3px 1px #ddd;
   justify-content: space-evenly;
 }
 .link{
   text-decoration: none;
   cursor: pointer;
 }
+

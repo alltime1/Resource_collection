@@ -9,9 +9,19 @@ li{
   list-style: none;
   white-space: nowrap;
 }
-li:hover{
+li a{
+  display: block;
+  padding: 2px 8px; 
+  text-align: center;
+  margin-bottom: 8px;
+}
+li a:hover{
+  color: #fff;
+}
+a:active {
   color: #fff;
 }
 .main{
+  height: 100%;
   display: flex;
 }

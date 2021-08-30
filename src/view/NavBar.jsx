@@ -10,7 +10,7 @@ export default class main extends Component {
     }
   }
   componentDidMount(){
-    if(this.props.history.location.pathname=="/mine"){
+    if(this.props.history.location.pathname==="/mine"){
       this.setState({
         choosedNav:1
        })
@@ -37,6 +37,7 @@ export default class main extends Component {
             </Link>
           )
         })}
+
 
         {this.props.children}
       </div>

@@ -7,7 +7,6 @@ function routers() {
         <Route component={Main} exact path="/">
         </Route>
         <Route component={Main} exact path="/main">
-          
         </Route>
         <Route component={Mine} exact path="/mine">
         </Route>

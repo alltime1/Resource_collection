@@ -16,7 +16,7 @@ export default class App extends Component {
     let ctx = this.canvasRef.current.getContext("2d")
     ctx.font = "72px Arial";
     ctx.fillStyle = createGradient(ctx, { x: 0, y: 0 }, { x: 0, y: 72 }, "red", "green");
-    ctx.fillText("web源", 16, 80)
+    ctx.fillText("三个字", 16, 80)
   }
   render() {
     return (

@@ -9,10 +9,12 @@
 .App-header{
   position: absolute;
   left: 0;
+  border-bottom: 1px solid #ddd;
+  background: #fff;
   top: 0;
   box-sizing: border-box;
   width: 100%;
-  padding: 10px 0;
+  padding: 0px 0;
   padding-left:calc(50% - 60px) ;
   
 }
